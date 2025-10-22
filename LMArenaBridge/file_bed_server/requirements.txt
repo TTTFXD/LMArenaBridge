@@ -1,5 +1,0 @@
-fastapi
-uvicorn[standard]
-pydantic
-python-multipart
-apscheduler
