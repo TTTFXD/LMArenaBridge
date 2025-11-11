@@ -226,7 +226,7 @@ sequenceDiagram
 
     alt 初始化
         T->>+S: (页面加载) 建立 WebSocket 连接
-        S-->>-T: 确认连接
+        S-->>T: 确认连接
     end
 
     alt 手动更新模型列表 (可选)
@@ -235,7 +235,7 @@ sequenceDiagram
         T->>T: 抓取页面 HTML
         T->>S: (HTTP) POST /internal/update_available_models (含HTML)
         S->>S: 解析HTML并保存到 available_models.json
-        S-->>-MU: 确认
+        S-->>MU: 确认
     end
 
     alt 手动更新会话ID
@@ -244,7 +244,7 @@ sequenceDiagram
         T->>L: (用户点击Retry) 拦截到 fetch 请求
         T->>IU: (HTTP) 发送捕获到的ID
         IU->>IU: 更新 config.jsonc
-        IU-->>-T: 确认
+        IU-->>T: 确认
     end
 
     alt 正常聊天流程
@@ -254,7 +254,7 @@ sequenceDiagram
         T->>L: (fetch) 发送真实请求到 LMArena API
         L-->>T: (流式)返回模型响应
         T->>S: (WebSocket) 将响应数据块一块块发回
-        S-->>-C: (流式) 返回 OpenAI 格式的响应
+        S-->>C: (流式) 返回 OpenAI 格式的响应
     end
 
     alt 正常聊天流程 (包含文生图)
@@ -267,14 +267,14 @@ sequenceDiagram
             L-->>T: (流式) 返回图片 URL
             T->>S: (WebSocket) 将 URL 发回
             S->>S: 将 URL 格式化为 Markdown 文本
-            S-->>-C: (HTTP) 返回包含 Markdown 图片的聊天响应
+            S-->>C: (HTTP) 返回包含 Markdown 图片的聊天响应
         else 如果是普通文本模型
             S->>S: 转换请求为 LMArena 格式
             S->>T: (WebSocket) 发送包含 request_id 和载荷的消息
             T->>L: (fetch) 发送真实请求到 LMArena API
             L-->>T: (流式)返回模型响应
             T->>S: (WebSocket) 将响应数据块一块块发回
-            S-->>-C: (流式) 返回 OpenAI 格式的响应
+            S-->>C: (流式) 返回 OpenAI 格式的响应
         end
     end
 ```
